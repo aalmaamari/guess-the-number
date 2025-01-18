@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import random
-
+import sqlite3
+import json
 
 
 class GuessingGame:
@@ -11,12 +12,13 @@ class GuessingGame:
    def __init__(self, upper: int, lower: int):
       self.upper = upper
       self.lower = lower
-      self.secretNumber = random.randint(lower,upper)
+      self.secretNumber = 0
       self.userguesses = []
 
    def startGame(self):
-       print(f"I have a number in mind and you have to guess.\
-	   \nIt is an integer between {self.lower} and {self.upper}")
+       self.secretNumber = random.randint(self.lower,self.upper)
+    #    print(f"I have a number in mind and you have to guess.\
+	#    \nIt is an integer between {self.lower} and {self.upper}")
 
     
    def isItTheNumber(self,machineGuess):
@@ -48,8 +50,6 @@ class GuessingGame:
         plt.plot(myX, self.userguesses, len(self.userguesses), self.secretNumber, '*', markerfacecolor= 'r', markersize=50, markeredgecolor= 'r')
         plt.show()
 
-
-
 class Guesser():
     '''
     A class to represent the guessing machine (The Guesser)
@@ -67,19 +67,55 @@ class Guesser():
             self.lower = self.guess
         else:
             self.upper = self.guess
-        
-          
+
+class DataBaseManager():
+
+    def __init__(self, db_name: str):
+        self.db_name = db_name
+        self.connection = sqlite3.connect(self.db_name)
+        self.cursor = self.connection.cursor()
+
+    def createTable(self, table_name: str):
+        self.query =f"CREATE TABLE IF NOT EXISTS {table_name} ( id INTEGER PRIMARY KEY AUTOINCREMENT, atempts TEXT NOT NULL, numberOfGuesses INTEGER NOT NULL, number INTEGER NOT NULL)"
+        self.cursor.execute(self.query)
+        db.connection.commit()  
+
+    def insertAtemptsData(self, userguesses, secretNumber):
+        userguesses_json = json.dumps(userguesses)
+        db.cursor.execute('INSERT INTO atemptsData (atempts, numberOfGuesses, number) VALUES (?,?,?)', (userguesses_json, len(userguesses), secretNumber))
+        db.connection.commit()
+
+    def fetchAgame(self, id):
+        ''' retrive one raw from db using id'''
+        self.cursor.execute('SELECT * FROM atemptsData WHERE id=?', (id,))
+        result = self.cursor.fetchall()
+        return result
+
+    
+    def fetchAtempt(self, id):
+        ''' retrive atempts array from db using id'''
+        result = self.fetchAgame(id)
+        atempts_array = json.loads(result[0][1])
+        return atempts_array
 
 if __name__ == "__main__":
-    guessing_game = GuessingGame(1000, 1)
-    guesser = Guesser(guessing_game.getUpper(),guessing_game.getLower())
     
-    guessing_game.startGame()
+    db = DataBaseManager('guessGameResult.db')
+    db.createTable("atemptsData")
+
+    for runs in range(1000):
+        guessing_game = GuessingGame(1000, 1)
+        guesser = Guesser(guessing_game.getUpper(), guessing_game.getLower())
+     
+        guessing_game.startGame()
+        
+        while guesser.guess != guessing_game.secretNumber:   
+            guesser.createNewGuess()
+            guesser.reciveHint(guessing_game.isItTheNumber(guesser.guess))
+
+        db.insertAtemptsData(guessing_game.userguesses, guessing_game.secretNumber)
+
+
     
-    while guesser.guess != guessing_game.secretNumber:   
-        guesser.createNewGuess()
-        guesser.reciveHint(guessing_game.isItTheNumber(guesser.guess))
-    
-    print(guessing_game)
-    guessing_game.plotGuesses()
-    
+
+    db.connection.close()

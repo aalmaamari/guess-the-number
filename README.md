@@ -1,5 +1,5 @@
 # Guess The Number Project
-**Version:** 3.0.0
+**Version:** 4.0.0
 
 
 ## Table of Contents 
@@ -12,12 +12,14 @@
 
 ## Description 
 An implementation of the famous game Guess The Number. It made to show gradual increase in programming skills for educational and knowledge demonstration purpose.
-The secret number and guessing are made by the machine. 
+The secret number and guessing are made by the machine.
+Database is created to collect all guesses trials 
 
 
 ## Technologies-Used
 - Python
 - matplotlib 
+- SQLite 
 
 
 ## Installation
@@ -43,3 +45,4 @@ python guess-the-number.py
 - matplotlib implemented.
 - OOP implemented.
 - The secret number and guessing are made by the machine.
+- SQLite database to collect all guesses trials.
