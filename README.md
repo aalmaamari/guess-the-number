@@ -3,11 +3,11 @@
 
 
 ## Table of Contents 
-- [Description] (#description)
-- [Technologies-Used] (#Technologies-Used)
-- [Installation] (#installation)
-- [Usage] #usage
-- [Features] #features
+- [Description](#description)
+- [Technologies-Used](#Technologies-Used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
 
 
 ## Description 
