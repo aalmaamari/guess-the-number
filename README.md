@@ -41,3 +41,4 @@ python guess-the-number.py
 ## Features
 - very simple code.
 - matplotlib implemented.
+- OOP implemented.

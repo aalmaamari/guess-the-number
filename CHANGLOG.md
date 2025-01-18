@@ -6,4 +6,10 @@
 
 ## [1.1.0] - 2025-01-18
 ### Adedd
-- plotting of the guessing progress is added.
+- Plotting of the guessing progress is added.
+
+
+## [2.0.0] - 2025-01-18
+### Adedd
+- Object oriented programming approach is implemented.
+
