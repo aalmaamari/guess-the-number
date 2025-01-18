@@ -19,16 +19,22 @@ class GuessingGame:
 	   \nIt is an integer between {self.lower} and {self.upper}")
 
     
-   def testGuess(self,userInput):
-       self.userguesses.append(userInput)
-       if userInput < self.secretNumber:
-           print('Go up')
+   def isItTheNumber(self,machineGuess):
+       self.userguesses.append(machineGuess)
+       if machineGuess < self.secretNumber:
+           return "Go up"
        else:
-           print('Go down')
+           return "Go down"
        
    def __str__(self):
       return f"You WIN.\nYou have {len(self.userguesses)} atempts.\natempts are : {self.userguesses} "  
-       
+
+   def getUpper(self):
+       return self.upper
+     
+   def getLower(self):
+       return self.lower
+     
    def plotGuesses(self):
         myX = []
         for i in range(len(self.userguesses)):
@@ -44,22 +50,36 @@ class GuessingGame:
 
 
 
+class Guesser():
+    '''
+    A class to represent the guessing machine (The Guesser)
+    '''
+    def __init__(self, upper: int, lower: int):
+        self.upper = upper
+        self.lower = lower
+        self.guess = 0
+
+    def createNewGuess(self):
+        self.guess = random.randint(self.lower, self.upper)
+
+    def reciveHint(self, hint):
+        if hint == "Go up":
+            self.lower = self.guess
+        else:
+            self.upper = self.guess
+        
+          
 
 if __name__ == "__main__":
-
- guessing_game = GuessingGame(100, 0)
-
- guessing_game.startGame()
-
- userInput = 0
- while userInput != guessing_game.secretNumber: 
-  userInput= input("Guess an integer:")
-  while not userInput.isdigit():
-    userInput= input("not integer, Guess an integer:")
-  userInput= int(userInput)
-  guessing_game.testGuess(userInput)
-
-      
-  
- print(guessing_game)
- guessing_game.plotGuesses()
+    guessing_game = GuessingGame(1000, 1)
+    guesser = Guesser(guessing_game.getUpper(),guessing_game.getLower())
+    
+    guessing_game.startGame()
+    
+    while guesser.guess != guessing_game.secretNumber:   
+        guesser.createNewGuess()
+        guesser.reciveHint(guessing_game.isItTheNumber(guesser.guess))
+    
+    print(guessing_game)
+    guessing_game.plotGuesses()
+    

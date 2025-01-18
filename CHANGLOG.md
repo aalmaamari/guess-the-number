@@ -13,3 +13,7 @@
 ### Adedd
 - Object oriented programming approach is implemented.
 
+
+## [3.0.0] - 2025-01-18
+### Adedd
+- The secret number and guessing are made by the machine.
