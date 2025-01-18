@@ -1,7 +1,9 @@
+import matplotlib.pyplot as plt
 import random
 
-# Generating the secret number
+
 number= random.randint(1,100)
+print(number)
 
 userguesses = []
 
@@ -11,14 +13,12 @@ print('I have a number in mind and you have to guess.\
 
 
 while 1:
-    # Prepare user input
 	userinput= input("Guess an integer:")
 	while not userinput.isdigit():
 		userinput= input("not integer, Guess an integer:")
 	userinput= int(userinput)
 	userguesses.append(userinput)
 
-	# Evaluate The guess
 	if userinput == number:
 		print("you win")
 		break
@@ -31,4 +31,18 @@ while 1:
 
 
 print('you have ', len(userguesses), 'atempts')
-print(f"Here are your guesses: {userguesses}.")
+print(f"You have {userguesses} atempts.")
+
+
+# Plotting
+myX = []
+for i in range(len(userguesses)):
+	i+=1
+	myX.append(i)
+	
+plt.figure(figsize= (15,5))
+plt.title('user progress toward the target')
+plt.xlabel('number of atempts')
+plt.ylabel('user atempts')
+plt.plot(myX, userguesses, len(userguesses), number, '*', markerfacecolor= 'r', markersize=50, markeredgecolor= 'r')
+plt.show()
