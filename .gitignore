@@ -1,0 +1,6 @@
+# environment  files 
+.venv
+# Platform-Specific files
+.DS_Store
+
+
